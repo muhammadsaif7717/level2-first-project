@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { z } from 'zod';
 
 // creatimg a scema vallidation using joy
 
@@ -154,4 +155,114 @@ export const studentJoiValidationSchema = Joi.object({
   isActive: Joi.string().valid('active', 'blocked').default('active').messages({
     'any.only': '{#value} is not a valid status.',
   }),
+});
+
+// creatimg a scema vallidation using joy
+
+export const studentZodValidationSchema = z.object({
+  id: z
+    .string()
+    .min(5, { message: 'ID must be at least 5 characters long.' })
+    .max(20, { message: 'ID cannot exceed 20 characters.' }),
+  name: z.object({
+    firstName: z
+      .string()
+      .min(2, { message: 'First name must be at least 2 characters long.' })
+      .max(50, { message: 'First name cannot exceed 50 characters.' }),
+    middleName: z
+      .string()
+      .max(50, { message: 'Middle name cannot exceed 50 characters.' })
+      .optional(),
+    lastName: z
+      .string()
+      .min(2, { message: 'Last name must be at least 2 characters long.' })
+      .max(50, { message: 'Last name cannot exceed 50 characters.' }),
+  }),
+  gender: z.enum(['male', 'female', 'other'], {
+    invalid_type_error: '{#value} is not a valid gender.',
+  }),
+  dateOfBirth: z.string(),
+  email: z
+    .string()
+    .email({ message: 'Email must be a valid email address.' })
+    .max(100, { message: 'Email cannot exceed 100 characters.' }),
+  contactNo: z
+    .string()
+    .min(10, { message: 'Contact number must be at least 10 characters long.' })
+    .max(15, { message: 'Contact number cannot exceed 15 characters.' }),
+  emergencyContactNo: z
+    .string()
+    .min(10, {
+      message: 'Emergency contact number must be at least 10 characters long.',
+    })
+    .max(15, {
+      message: 'Emergency contact number cannot exceed 15 characters.',
+    }),
+  bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
+  presentAddress: z
+    .string()
+    .max(100, { message: 'Present address cannot exceed 100 characters.' }),
+  parmanentAddress: z
+    .string()
+    .max(100, { message: 'Permanent address cannot exceed 100 characters.' }),
+  guardian: z.object({
+    fatherName: z
+      .string()
+      .max(50, { message: "Father's name cannot exceed 50 characters." }),
+    fatherOccupation: z
+      .string()
+      .max(50, { message: "Father's occupation cannot exceed 50 characters." }),
+    fatherContactNo: z
+      .string()
+      .min(10, {
+        message: "Father's contact number must be at least 10 characters long.",
+      })
+      .max(15, {
+        message: "Father's contact number cannot exceed 15 characters.",
+      }),
+    motherName: z
+      .string()
+      .max(50, { message: "Mother's name cannot exceed 50 characters." }),
+    motherOccupation: z
+      .string()
+      .max(50, { message: "Mother's occupation cannot exceed 50 characters." }),
+    motherContactNo: z
+      .string()
+      .min(10, {
+        message: "Mother's contact number must be at least 10 characters long.",
+      })
+      .max(15, {
+        message: "Mother's contact number cannot exceed 15 characters.",
+      }),
+  }),
+  localGuardian: z.object({
+    name: z
+      .string()
+      .max(50, {
+        message: "Local guardian's name cannot exceed 50 characters.",
+      }),
+    occupation: z
+      .string()
+      .max(50, {
+        message: "Local guardian's occupation cannot exceed 50 characters.",
+      }),
+    contactNo: z
+      .string()
+      .min(10, {
+        message:
+          "Local guardian's contact number must be at least 10 characters long.",
+      })
+      .max(15, {
+        message: "Local guardian's contact number cannot exceed 15 characters.",
+      }),
+    address: z
+      .string()
+      .max(100, {
+        message: "Local guardian's address cannot exceed 100 characters.",
+      }),
+  }),
+  profileImage: z
+    .string()
+    .max(200, { message: 'Profile image URL cannot exceed 200 characters.' }),
+  isActive: z.enum(['active', 'blocked']).default('active'),
 });
