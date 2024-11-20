@@ -1,9 +1,20 @@
 import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
+import { studentJoiValidationSchema } from './student.validation';
 
 export const createStudent = async (req: Request, res: Response) => {
   try {
     const { student: studentData } = req.body;
+
+    const { error } = studentJoiValidationSchema.validate(studentData);
+    if (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Something went wrong',
+        error: error.details,
+      });
+    }
+
     // will call service func to send this data
     const result = await StudentServices.createStudentIntoDB(studentData);
     //send response
@@ -30,7 +41,11 @@ const getAllStudents = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error,
+    });
   }
 };
 
@@ -44,7 +59,11 @@ const getSingleStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error,
+    });
   }
 };
 

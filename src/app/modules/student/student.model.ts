@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+// import validator from 'validator';
 import {
   Guardian,
   LocalGuardian,
@@ -33,6 +34,10 @@ const userNameSchema = new Schema<UserName>({
     maxlength: [50, 'Last name cannot exceed 50 characters.'],
     minlength: [2, 'Last name must be at least 2 characters long.'],
     trim: true,
+    // validate: {
+    //   validator: (value: string) => validator.isAlpha(value),
+    //   message: '{VALUE} is not valid'
+    // }
   },
 });
 
@@ -150,6 +155,10 @@ const studentSchema = new Schema<Student>({
     unique: true,
     maxlength: [100, 'Email cannot exceed 100 characters.'],
     trim: true,
+    // validate: {
+    //   validator: (value: string) => validator.isEmail(value),
+    //   message: '{VALUE} is not valid'
+    // }
   },
   contactNo: {
     type: String,
