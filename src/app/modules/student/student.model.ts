@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 // import validator from 'validator';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
 import {
   TGuardian,
   TLocalGuardian,
@@ -239,8 +239,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   },
 });
 
-
-
 //! Pre save middleware / hook : will work on create() save()
 studentSchema.pre('save', async function (next) {
   console.log(this, 'pre hook: we will save the data');
@@ -249,76 +247,49 @@ studentSchema.pre('save', async function (next) {
   const user = this;
 
   // hassing pass and save into DB
-  user.password = await bcrypt.hash(user.password, Number(config.bcript_salt_rounds));
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcript_salt_rounds),
+  );
 
   next();
-})
+});
 
 //! Post save middleware / hook
 studentSchema.post('save', function (doc, next) {
-  doc.password = ''
+  doc.password = '';
 
   console.log(this, 'post hook: we save our data');
 
   next();
-})
-
-
-
+});
 
 /// Queary middleware
 
 studentSchema.pre('find', async function (next) {
-  this.find({ isDeleted: { $ne: true } })
+  this.find({ isDeleted: { $ne: true } });
 
   next();
-})
+});
 
 studentSchema.pre('findOne', async function (next) {
-  this.findOne({ isDeleted: { $ne: true } })
+  this.findOne({ isDeleted: { $ne: true } });
 
   next();
-})
+});
 
 studentSchema.pre('aggregate', async function (next) {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
 
   next();
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});
 
 //creating a custom satatic method
 
 studentSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
-}
-
-
-
-
-
-
-
-
-
-
+};
 
 // creating a custom instance method
 
@@ -326,7 +297,5 @@ studentSchema.statics.isUserExists = async function (id: string) {
 //   const existingUser = await Student.findOne({ id });
 //   return existingUser;
 // }
-
-
 
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);

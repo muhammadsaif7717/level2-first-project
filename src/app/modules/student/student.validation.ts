@@ -240,16 +240,12 @@ export const studentZodValidationSchema = z.object({
       }),
   }),
   localGuardian: z.object({
-    name: z
-      .string()
-      .max(50, {
-        message: "Local guardian's name cannot exceed 50 characters.",
-      }),
-    occupation: z
-      .string()
-      .max(50, {
-        message: "Local guardian's occupation cannot exceed 50 characters.",
-      }),
+    name: z.string().max(50, {
+      message: "Local guardian's name cannot exceed 50 characters.",
+    }),
+    occupation: z.string().max(50, {
+      message: "Local guardian's occupation cannot exceed 50 characters.",
+    }),
     contactNo: z
       .string()
       .min(10, {
@@ -259,11 +255,9 @@ export const studentZodValidationSchema = z.object({
       .max(15, {
         message: "Local guardian's contact number cannot exceed 15 characters.",
       }),
-    address: z
-      .string()
-      .max(100, {
-        message: "Local guardian's address cannot exceed 100 characters.",
-      }),
+    address: z.string().max(100, {
+      message: "Local guardian's address cannot exceed 100 characters.",
+    }),
   }),
   profileImage: z
     .string()
