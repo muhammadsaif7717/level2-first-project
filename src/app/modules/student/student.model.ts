@@ -232,6 +232,11 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: [true, 'Status is required.'],
     trim: true,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+    required: [true, 'isDeleted is required.'],
+  },
 });
 
 
@@ -250,8 +255,8 @@ studentSchema.pre('save', async function (next) {
 })
 
 //! Post save middleware / hook
-studentSchema.post('save', function (doc ,next) {
-  doc.password= ''
+studentSchema.post('save', function (doc, next) {
+  doc.password = ''
 
   console.log(this, 'post hook: we save our data');
 
@@ -261,7 +266,25 @@ studentSchema.post('save', function (doc ,next) {
 
 
 
+/// Queary middleware
 
+studentSchema.pre('find', async function (next) {
+  this.find({ isDeleted: { $ne: true } })
+
+  next();
+})
+
+studentSchema.pre('findOne', async function (next) {
+  this.findOne({ isDeleted: { $ne: true } })
+
+  next();
+})
+
+studentSchema.pre('aggregate', async function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
+
+  next();
+})
 
 
 

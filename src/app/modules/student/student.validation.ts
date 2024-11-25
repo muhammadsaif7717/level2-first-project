@@ -269,4 +269,5 @@ export const studentZodValidationSchema = z.object({
     .string()
     .max(200, { message: 'Profile image URL cannot exceed 200 characters.' }),
   isActive: z.enum(['active', 'blocked']).default('active'),
+  isDeleted: z.boolean().default(false),
 });
