@@ -157,13 +157,17 @@ export const studentJoiValidationSchema = Joi.object({
   }),
 });
 
-// creatimg a scema vallidation using joy
+// creatimg a scema vallidation using zod
 
 export const studentZodValidationSchema = z.object({
   id: z
     .string()
     .min(5, { message: 'ID must be at least 5 characters long.' })
     .max(20, { message: 'ID cannot exceed 20 characters.' }),
+  password: z
+    .string()
+    .min(5, { message: 'password must be at least 5 characters long.' })
+    .max(20, { message: 'password cannot exceed 20 characters.' }),
   name: z.object({
     firstName: z
       .string()

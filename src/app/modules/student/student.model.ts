@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 // import validator from 'validator';
+import bcrypt from 'bcrypt'
 import {
   TGuardian,
   TLocalGuardian,
@@ -7,6 +8,7 @@ import {
   StudentModel,
   TUserName,
 } from './student.interface';
+import config from '../../config';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -132,6 +134,14 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     maxlength: [20, 'Student ID cannot exceed 20 characters.'],
     trim: true,
   },
+  password: {
+    type: String,
+    required: [true, 'Password is required.'],
+    unique: true,
+    minlength: [5, 'Password must be at least 5 characters long.'],
+    maxlength: [20, 'Password cannot exceed 20 characters.'],
+    trim: true,
+  },
   name: {
     type: userNameSchema,
     required: [true, 'Student name is required.'],
@@ -227,9 +237,49 @@ const studentSchema = new Schema<TStudent, StudentModel>({
 
 
 
+//! Pre save middleware / hook : will work on create() save()
+studentSchema.pre('save', async function (next) {
+  console.log(this, 'pre hook: we will save the data');
+
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+
+  // hassing pass and save into DB
+  user.password = await bcrypt.hash(user.password, Number(config.bcript_salt_rounds));
+
+  next();
+})
+
+//! Post save middleware / hook
+studentSchema.post('save', function () {
+  console.log(this, 'post hook: we save our data');
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //creating a custom satatic method
 
-studentSchema.statics.isUserExists =async function(id:string){
+studentSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
 }
