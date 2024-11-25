@@ -125,118 +125,132 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
   },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel>({
-  id: {
-    type: String,
-    required: [true, 'Student ID is required.'],
-    unique: true,
-    minlength: [5, 'Student ID must be at least 5 characters long.'],
-    maxlength: [20, 'Student ID cannot exceed 20 characters.'],
-    trim: true,
-  },
-  password: {
-    type: String,
-    required: [true, 'Password is required.'],
-    minlength: [5, 'Password must be at least 5 characters long.'],
-    maxlength: [20, 'Password cannot exceed 20 characters.'],
-    trim: true,
-  },
-  name: {
-    type: userNameSchema,
-    required: [true, 'Student name is required.'],
-  },
-  gender: {
-    type: String,
-    enum: {
-      values: ['male', 'female', 'other'],
-      message: '{VALUE} is not a valid gender.',
+const studentSchema = new Schema<TStudent, StudentModel>(
+  {
+    id: {
+      type: String,
+      required: [true, 'Student ID is required.'],
+      unique: true,
+      minlength: [5, 'Student ID must be at least 5 characters long.'],
+      maxlength: [20, 'Student ID cannot exceed 20 characters.'],
+      trim: true,
     },
-    required: [true, 'Gender is required.'],
-    trim: true,
-  },
-  dateOfBirth: {
-    type: String,
-    required: [true, 'Date of birth is required.'],
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: [true, 'Email address is required.'],
-    unique: true,
-    maxlength: [100, 'Email cannot exceed 100 characters.'],
-    trim: true,
-    // validate: {
-    //   validator: (value: string) => validator.isEmail(value),
-    //   message: '{VALUE} is not valid'
-    // }
-  },
-  contactNo: {
-    type: String,
-    required: [true, 'Contact number is required.'],
-    minlength: [10, 'Contact number must be at least 10 characters long.'],
-    maxlength: [15, 'Contact number cannot exceed 15 characters.'],
-    trim: true,
-  },
-  emergencyContactNo: {
-    type: String,
-    required: [true, 'Emergency contact number is required.'],
-    minlength: [
-      10,
-      'Emergency contact number must be at least 10 characters long.',
-    ],
-    maxlength: [15, 'Emergency contact number cannot exceed 15 characters.'],
-    trim: true,
-  },
-  bloodGroup: {
-    type: String,
-    enum: {
-      values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-      message: '{VALUE} is not a valid blood group.',
+    password: {
+      type: String,
+      required: [true, 'Password is required.'],
+      minlength: [5, 'Password must be at least 5 characters long.'],
+      maxlength: [20, 'Password cannot exceed 20 characters.'],
+      trim: true,
     },
-    required: [true, 'Blood group is required.'],
-    trim: true,
-  },
-  presentAddress: {
-    type: String,
-    required: [true, 'Present address is required.'],
-    maxlength: [100, 'Present address cannot exceed 100 characters.'],
-    trim: true,
-  },
-  parmanentAddress: {
-    type: String,
-    required: [true, 'Permanent address is required.'],
-    maxlength: [100, 'Permanent address cannot exceed 100 characters.'],
-    trim: true,
-  },
-  guardian: {
-    type: guardianSchema,
-    required: [true, 'Guardian information is required.'],
-  },
-  localGuardian: {
-    type: localGuardianSchema,
-    required: [true, 'Local guardian information is required.'],
-  },
-  profileImage: {
-    type: String,
-    required: [true, 'Profile image is required.'],
-    maxlength: [200, 'Profile image URL cannot exceed 200 characters.'],
-    trim: true,
-  },
-  isActive: {
-    type: String,
-    enum: {
-      values: ['active', 'blocked'],
-      message: '{VALUE} is not a valid status.',
+    name: {
+      type: userNameSchema,
+      required: [true, 'Student name is required.'],
     },
-    default: 'active',
-    required: [true, 'Status is required.'],
-    trim: true,
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female', 'other'],
+        message: '{VALUE} is not a valid gender.',
+      },
+      required: [true, 'Gender is required.'],
+      trim: true,
+    },
+    dateOfBirth: {
+      type: String,
+      required: [true, 'Date of birth is required.'],
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: [true, 'Email address is required.'],
+      unique: true,
+      maxlength: [100, 'Email cannot exceed 100 characters.'],
+      trim: true,
+      // validate: {
+      //   validator: (value: string) => validator.isEmail(value),
+      //   message: '{VALUE} is not valid'
+      // }
+    },
+    contactNo: {
+      type: String,
+      required: [true, 'Contact number is required.'],
+      minlength: [10, 'Contact number must be at least 10 characters long.'],
+      maxlength: [15, 'Contact number cannot exceed 15 characters.'],
+      trim: true,
+    },
+    emergencyContactNo: {
+      type: String,
+      required: [true, 'Emergency contact number is required.'],
+      minlength: [
+        10,
+        'Emergency contact number must be at least 10 characters long.',
+      ],
+      maxlength: [15, 'Emergency contact number cannot exceed 15 characters.'],
+      trim: true,
+    },
+    bloodGroup: {
+      type: String,
+      enum: {
+        values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+        message: '{VALUE} is not a valid blood group.',
+      },
+      required: [true, 'Blood group is required.'],
+      trim: true,
+    },
+    presentAddress: {
+      type: String,
+      required: [true, 'Present address is required.'],
+      maxlength: [100, 'Present address cannot exceed 100 characters.'],
+      trim: true,
+    },
+    parmanentAddress: {
+      type: String,
+      required: [true, 'Permanent address is required.'],
+      maxlength: [100, 'Permanent address cannot exceed 100 characters.'],
+      trim: true,
+    },
+    guardian: {
+      type: guardianSchema,
+      required: [true, 'Guardian information is required.'],
+    },
+    localGuardian: {
+      type: localGuardianSchema,
+      required: [true, 'Local guardian information is required.'],
+    },
+    profileImage: {
+      type: String,
+      required: [true, 'Profile image is required.'],
+      maxlength: [200, 'Profile image URL cannot exceed 200 characters.'],
+      trim: true,
+    },
+    isActive: {
+      type: String,
+      enum: {
+        values: ['active', 'blocked'],
+        message: '{VALUE} is not a valid status.',
+      },
+      default: 'active',
+      required: [true, 'Status is required.'],
+      trim: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+      required: [true, 'isDeleted is required.'],
+    },
   },
-  isDeleted: {
-    type: Boolean,
-    default: false,
-    required: [true, 'isDeleted is required.'],
+  {
+    toJSON: {
+      virtuals: true,
+    },
   },
+);
+
+//virtual
+studentSchema.virtual('fullName').get(function () {
+  return (
+    this.name.firstName + ' ' + this.name.middleName + ' ' + this.name.lastName
+  );
 });
 
 //! Pre save middleware / hook : will work on create() save()
